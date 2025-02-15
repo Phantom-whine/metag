@@ -389,8 +389,9 @@ def post_create_text(request):
 
         content = generated_data['content']
 
-        if request.data.get('cta') :
-            content = f'{generated_data['content']} <br> {request.data.get('cta')}'
+        if request.data.get('cta'):
+            content = f"{generated_data['content']} <br> {request.data.get('cta')}"
+
         
         # Create and save post
         post = Post.objects.create(
