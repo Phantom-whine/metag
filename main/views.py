@@ -384,16 +384,20 @@ def post_create_text(request):
         """
         
         # Generate content with Gemini 1.5 Flash
+        print('-----------4')
         response = chat_session.send_message(prompt)
         generated_data = extract_json(response.text)
+        print('-----------4')
 
         content = generated_data['content']
+        print('-----------4')
 
         if request.data.get('cta'):
             content = f"{generated_data['content']} <br> {request.data.get('cta')}"
 
         
         # Create and save post
+        print('-----------4')
         post = Post.objects.create(
             user=request.user,
             title=generated_data['title'],
