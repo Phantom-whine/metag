@@ -154,8 +154,6 @@ python-multipart==0.0.12
 python-slugify==8.0.4
 pytube==15.0.0
 pytz==2024.2
-pywin32==308
-pywin32-ctypes==0.2.3
 PyYAML==6.0.2
 qrcode==7.4.2
 RapidFuzz==3.10.1
