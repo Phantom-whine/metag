@@ -1,6 +1,6 @@
 # views.py
 import json
-import re
+import re, time
 import logging
 import requests
 from django.conf import settings
@@ -77,37 +77,41 @@ def summarize_text(text, summary_length=200):
         logger.error(f"Error in summarize_text: {e}")
         return False
 
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+requests.utils.default_user_agent = lambda: USER_AGENT
+
 def get_youtube_video_transcript(video_url):
     """
-    Fetches the transcript of a YouTube video.
-
+    Fetches the transcript with rate limiting handling and proper User-Agent.
+    
     Args:
-        video_url (str): The URL of the YouTube video.
-
+        video_url (str): YouTube video URL
+        
     Returns:
-        str: The transcript of the video as a single string, or None if no transcript is available.
+        str|False: Transcript text or False if unavailable
     """
-    try:
-        # Extract the video ID from the URL
-        video_id = YouTube(video_url).video_id
+    max_retries = 3
+    base_delay = 5  # seconds
 
-        # Fetch the transcript
-        transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+    for attempt in range(max_retries):
+        try:
+            video_id = YouTube(video_url).video_id
+            transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+            return " ".join([t["text"] for t in transcript_list])
+            
+        except (TranscriptsDisabled, NoTranscriptAvailable) as e:
+            logger.error(f"Transcript unavailable: {str(e)}")
+            return False
+            
+        except Exception as e:
+            if attempt < max_retries - 1:
+                delay = base_delay * (attempt + 1)
+                logger.warning(f"Attempt {attempt+1}/{max_retries}: Retrying in {delay}s")
+                time.sleep(delay)
+            else:
+                logger.error(f"Final attempt failed: {str(e)}")
+                return False
 
-        # Combine all transcript segments into a single string
-        transcript = " ".join([segment["text"] for segment in transcript_list])
-
-        return transcript
-
-    except TranscriptsDisabled as e:
-        logger.error(f"Transcripts are disabled for the video: {video_url}")
-        return False
-    except NoTranscriptAvailable as e:
-        logger.error(f"No transcript is available for the video: {video_url}")
-        return False
-    except Exception as e:
-        logger.error(f"An error occurred while fetching the transcript: {e}")
-        return False
 
 def extract_content(url):
     """
