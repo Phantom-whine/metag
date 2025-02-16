@@ -1,5 +1,5 @@
 # views.py
-import json
+import json, time
 import re
 import logging
 import requests
@@ -79,35 +79,46 @@ def summarize_text(text, summary_length=200):
 
 def get_youtube_video_transcript(video_url):
     """
-    Fetches the transcript of a YouTube video.
+    Fetches the transcript of a YouTube video with retries and rate limiting handling.
 
     Args:
         video_url (str): The URL of the YouTube video.
 
     Returns:
-        str: The transcript of the video as a single string, or None if no transcript is available.
+        str: The transcript as a single string, or False if unavailable.
     """
-    try:
-        # Extract the video ID from the URL
-        video_id = YouTube(video_url).video_id
+    max_retries = 3  # Maximum number of retries
+    base_delay = 5    # Base delay in seconds (will increase with each retry)
 
-        # Fetch the transcript
-        transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+    for attempt in range(max_retries):
+        try:
+            video_id = YouTube(video_url).video_id
 
-        # Combine all transcript segments into a single string
-        transcript = " ".join([segment["text"] for segment in transcript_list])
+            # Create a session with browser-like User-Agent
+            session = requests.Session()
+            session.headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
 
-        return transcript
+            # Fetch transcript with custom session
+            transcript_list = YouTubeTranscriptApi.get_transcript(video_id, session=session)
+            
+            transcript = " ".join([segment["text"] for segment in transcript_list])
+            return transcript
 
-    except TranscriptsDisabled as e:
-        logger.error(f"Transcripts are disabled for the video: {video_url}")
-        return False
-    except NoTranscriptAvailable as e:
-        logger.error(f"No transcript is available for the video: {video_url}")
-        return False
-    except Exception as e:
-        logger.error(f"An error occurred while fetching the transcript: {e}")
-        return False
+        except (TranscriptsDisabled, NoTranscriptAvailable) as e:
+            logger.error(f"Transcript error for {video_url}: {str(e)}")
+            return False
+        except Exception as e:
+            if '429' in str(e) and attempt < max_retries - 1:
+                delay = base_delay * (attempt + 1)  # Exponential backoff
+                logger.warning(f"Rate limited. Retry {attempt + 1}/{max_retries} in {delay}s")
+                time.sleep(delay)
+            else:
+                logger.error(f"Failed to fetch transcript: {str(e)}")
+                return False
+    return False
+
 
 def extract_content(url):
     """
