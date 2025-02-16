@@ -1,6 +1,6 @@
 # views.py
-import json
-import re, time
+import json, random
+import re, time, os
 import logging
 import requests
 from django.conf import settings
@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 from pytube import YouTube
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptAvailable
+from django.conf import settings
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -80,37 +81,53 @@ def summarize_text(text, summary_length=200):
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
 requests.utils.default_user_agent = lambda: USER_AGENT
 
+PROXY_FILE = settings.PROXY_LIST
+
+with open(PROXY_FILE) as f:
+    PROXY_DATA = json.load(f)
+
 def get_youtube_video_transcript(video_url):
     """
-    Fetches the transcript with rate limiting handling and proper User-Agent.
-    
-    Args:
-        video_url (str): YouTube video URL
-        
-    Returns:
-        str|False: Transcript text or False if unavailable
+    Final working version with proper proxy/header integration
     """
-    max_retries = 3
-    base_delay = 5  # seconds
-
+    max_retries = 5
+    base_delay = 3
+    
     for attempt in range(max_retries):
         try:
-            video_id = YouTube(video_url).video_id
-            transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
-            return " ".join([t["text"] for t in transcript_list])
+            # Random proxy selection
+            proxy_info = random.choice(PROXY_DATA)
+            proxy_url = proxy_info["proxy"]
             
+            # Configure proxies dictionary
+            proxies = {
+                'http': proxy_url
+            }
+
+            # Get video ID
+            video_id = YouTube(video_url).video_id
+
+            # Get transcript with proxies
+            transcript_list = YouTubeTranscriptApi.get_transcript(
+                video_id,
+                proxies=proxies
+            )
+
+            return " ".join([t["text"] for t in transcript_list])
+
         except (TranscriptsDisabled, NoTranscriptAvailable) as e:
-            logger.error(f"Transcript unavailable: {str(e)}")
-            return False
+            logger.error(f"Transcript error: {str(e)}")
+            return None
             
         except Exception as e:
+            logger.warning(f"Attempt {attempt+1} failed ({proxy_url}): {str(e)}")
+            
             if attempt < max_retries - 1:
-                delay = base_delay * (attempt + 1)
-                logger.warning(f"Attempt {attempt+1}/{max_retries}: Retrying in {delay}s")
+                delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
                 time.sleep(delay)
-            else:
-                logger.error(f"Final attempt failed: {str(e)}")
-                return False
+                
+    logger.error(f"All attempts failed for {video_url}")
+    return None
 
 
 def extract_content(url):
