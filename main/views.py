@@ -80,10 +80,10 @@ def summarize_text(text, summary_length=200):
         logger.error(f"Error in summarize_text: {e}")
         return False
 
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-requests.utils.default_user_agent = lambda: USER_AGENT
+# USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+# requests.utils.default_user_agent = lambda: USER_AGENT
 
-PROXY_FILE = settings.PROXY_LIST
+# PROXY_FILE = settings.PROXY_LIST
 
 # with open(PROXY_FILE) as f:
 #     PROXY_DATA = json.load(f)
