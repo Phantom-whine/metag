@@ -12,10 +12,12 @@ from .models import Post
 from .serializers import PostSerializer
 import google.generativeai as genai
 from bs4 import BeautifulSoup
-from pytube import YouTube
-from youtube_transcript_api import YouTubeTranscriptApi
-from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptAvailable
+# from pytube import YouTube
+# from youtube_transcript_api import YouTubeTranscriptApi
+# from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptAvailable
 from django.conf import settings
+from googleapiclient.discovery import build
+
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -83,51 +85,65 @@ requests.utils.default_user_agent = lambda: USER_AGENT
 
 PROXY_FILE = settings.PROXY_LIST
 
-with open(PROXY_FILE) as f:
-    PROXY_DATA = json.load(f)
+# with open(PROXY_FILE) as f:
+#     PROXY_DATA = json.load(f)
 
-def get_youtube_video_transcript(video_url):
-    """
-    Final working version with proper proxy/header integration
-    """
-    max_retries = 5
-    base_delay = 3
+# def get_youtube_video_transcript(video_url):
+#     """
+#     Final working version with proper proxy/header integration
+#     """
+#     max_retries = 5
+#     base_delay = 3
     
-    for attempt in range(max_retries):
-        try:
-            # Random proxy selection
-            proxy_info = random.choice(PROXY_DATA)
-            proxy_url = proxy_info["proxy"]
+#     for attempt in range(max_retries):
+#         try:
+#             # Random proxy selection
+#             proxy_info = random.choice(PROXY_DATA)
+#             proxy_url = proxy_info["proxy"]
             
-            # Configure proxies dictionary
-            proxies = {
-                'http': proxy_url
-            }
+#             # Configure proxies dictionary
+#             proxies = {
+#                 'http': proxy_url
+#             }
 
-            # Get video ID
-            video_id = YouTube(video_url).video_id
+#             # Get video ID
+#             video_id = YouTube(video_url).video_id
 
-            # Get transcript with proxies
-            transcript_list = YouTubeTranscriptApi.get_transcript(
-                video_id,
-                proxies=proxies
-            )
+#             # Get transcript with proxies
+#             transcript_list = YouTubeTranscriptApi.get_transcript(
+#                 video_id,
+#                 proxies=proxies
+#             )
 
-            return " ".join([t["text"] for t in transcript_list])
+#             return " ".join([t["text"] for t in transcript_list])
 
-        except (TranscriptsDisabled, NoTranscriptAvailable) as e:
-            logger.error(f"Transcript error: {str(e)}")
-            return None
+#         except (TranscriptsDisabled, NoTranscriptAvailable) as e:
+#             logger.error(f"Transcript error: {str(e)}")
+#             return None
             
-        except Exception as e:
-            logger.warning(f"Attempt {attempt+1} failed ({proxy_url}): {str(e)}")
+#         except Exception as e:
+#             logger.warning(f"Attempt {attempt+1} failed ({proxy_url}): {str(e)}")
             
-            if attempt < max_retries - 1:
-                delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
-                time.sleep(delay)
+#             if attempt < max_retries - 1:
+#                 delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+#                 time.sleep(delay)
                 
-    logger.error(f"All attempts failed for {video_url}")
-    return None
+#     logger.error(f"All attempts failed for {video_url}")
+#     return None
+
+# API_KEY = "YOUR_API_KEY"
+# youtube = build('youtube', 'v3', developerKey=API_KEY)
+
+# def get_video_captions(video_id):
+#     try:
+#         captions = youtube.captions().list(
+#             part="snippet",
+#             videoId=video_id
+#         ).execute()
+#         return captions
+#     except Exception as e:
+#         print(f"Error: {e}")
+#         return None
 
 
 def extract_content(url):
@@ -439,61 +455,61 @@ def post_create_text(request):
         return Response({'error': str(e)}, 
                        status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def post_create_youtube(request) :
-    url = request.data.get('y_url')
-    tone = request.data.get('tone')
-    cta = request.data.get('cta')
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def post_create_youtube(request) :
+#     url = request.data.get('y_url')
+#     tone = request.data.get('tone')
+#     cta = request.data.get('cta')
 
-    text = get_youtube_video_transcript(url)
-    if not text :
-        return Response({'error': 'Could not Fetch youtube video'}, status=status.HTTP_400_BAD_REQUEST)
-    try:
-        # Build AI prompt with structured requirements
-        prompt = f"""
-        {s_prompt}
-        Ensure the tone is authoritative yet conversational. This is the raw data: {text}, and the post should be formatted similarly to the examples provided also with easy to understand words.
-        Tone: {tone}
-        NOTE: NO hashtags
-        NOTE: THE CONTENT SHOULD BE THE LINKEDIN POST EACH PARAGRAPH SHOULD BE A <p> TAG AND EACH PARAGRAPH SHOULD HAVE A <br> SPACE BEWEEN THEM
-        NOTE: only <p> and <br> should be used no other tag
-        NOTE: MAX LENGTH OF 300 words
-        ALLOWED TAGS = [P, BR]
-        NOTE: NO BOLD TAGS <b> or <strong> or any other text formatting tags
+#     text = get_youtube_video_transcript(url)
+#     if not text :
+#         return Response({'error': 'Could not Fetch youtube video'}, status=status.HTTP_400_BAD_REQUEST)
+#     try:
+#         # Build AI prompt with structured requirements
+#         prompt = f"""
+#         {s_prompt}
+#         Ensure the tone is authoritative yet conversational. This is the raw data: {text}, and the post should be formatted similarly to the examples provided also with easy to understand words.
+#         Tone: {tone}
+#         NOTE: NO hashtags
+#         NOTE: THE CONTENT SHOULD BE THE LINKEDIN POST EACH PARAGRAPH SHOULD BE A <p> TAG AND EACH PARAGRAPH SHOULD HAVE A <br> SPACE BEWEEN THEM
+#         NOTE: only <p> and <br> should be used no other tag
+#         NOTE: MAX LENGTH OF 300 words
+#         ALLOWED TAGS = [P, BR]
+#         NOTE: NO BOLD TAGS <b> or <strong> or any other text formatting tags
         
-        NOTE: STRICTLY Return JSON format with these keys: 
-        ```json{{
-            "title": "string",
-            "content": "html string <p> and <br> tags",
-            "length": "integer"
-        }}```
-        """
+#         NOTE: STRICTLY Return JSON format with these keys: 
+#         ```json{{
+#             "title": "string",
+#             "content": "html string <p> and <br> tags",
+#             "length": "integer"
+#         }}```
+#         """
         
-        # Generate content with Gemini 1.5 Flash
-        response = chat_session.send_message(prompt)
-        generated_data = extract_json(response.text)
+#         # Generate content with Gemini 1.5 Flash
+#         response = chat_session.send_message(prompt)
+#         generated_data = extract_json(response.text)
         
-        # Create and save post
-        post = Post.objects.create(
-            user=request.user,
-            title=generated_data['title'],
-            content=generated_data['content'],
-            length=generated_data.get('length', len(generated_data['content']))
-        )
+#         # Create and save post
+#         post = Post.objects.create(
+#             user=request.user,
+#             title=generated_data['title'],
+#             content=generated_data['content'],
+#             length=generated_data.get('length', len(generated_data['content']))
+#         )
         
-        serializer = PostSerializer(post)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         serializer = PostSerializer(post)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-    except json.JSONDecodeError:
-        return Response({'error': 'Invalid AI response format'}, 
-                       status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    except KeyError as e:
-        return Response({'error': f'Missing required field: {str(e)}'}, 
-                       status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    except Exception as e:
-        return Response({'error': str(e)}, 
-                       status=status.HTTP_400_BAD_REQUEST)
+#     except json.JSONDecodeError:
+#         return Response({'error': 'Invalid AI response format'}, 
+#                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#     except KeyError as e:
+#         return Response({'error': f'Missing required field: {str(e)}'}, 
+#                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#     except Exception as e:
+#         return Response({'error': str(e)}, 
+#                        status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
