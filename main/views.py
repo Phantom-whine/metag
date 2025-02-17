@@ -363,7 +363,9 @@ NOTE: THE POST MUST BE LIKE HUMAN WRITING SO NO GIMICKY WORDS OR PHRASES
 NOTE: USE NATURAL LANGUAGE MAKE THE POST ENJOYABLE AND HAS ELEMENTS THAT WILL MAKE READERS READ TO THE END
 NOTE: ADD SOME PERSONAL CONTEXT / STORY IN THE POST
 NOTE: ALSO YOU CAN ASK SOME QUESTIONS TO THE READERS CAUSING THEM TO THINK BUT BE NATURAL
-NOTE: THE SECOND LINE OR SENTENCE SHOULD NOT BE TOO LONG MAX 7 WORDS AND SHOULD GRAB ATTENTION'''
+NOTE: THE SECOND LINE OR SENTENCE SHOULD NOT BE TOO LONG MAX 7 WORDS AND SHOULD GRAB ATTENTION
+NOTE: THE POST MUST HAVE ALOT OF CONTEXT NOT VERY SHORT WITH NO CONTEXT
+'''
 
 @api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
@@ -408,7 +410,6 @@ def post_create_text(request):
         NOTE: NO hashtags
         NOTE: THE CONTENT SHOULD BE THE LINKEDIN POST EACH PARAGRAPH SHOULD BE A <p> TAG AND EACH PARAGRAPH SHOULD HAVE A <br> SPACE BEWEEN THEM
         NOTE: only <p> and <br> should be used no other tag
-        NOTE: MAX LENGTH OF 300 words
         ALLOWED TAGS = [P, BR]
         NOTE: NO BOLD TAGS <b> or <strong> or any other text formatting tags in the response
         
@@ -474,7 +475,7 @@ def post_create_text(request):
 #         NOTE: NO hashtags
 #         NOTE: THE CONTENT SHOULD BE THE LINKEDIN POST EACH PARAGRAPH SHOULD BE A <p> TAG AND EACH PARAGRAPH SHOULD HAVE A <br> SPACE BEWEEN THEM
 #         NOTE: only <p> and <br> should be used no other tag
-#         NOTE: MAX LENGTH OF 300 words
+#         NOTE: MAX LENGTH OF 700 words
 #         ALLOWED TAGS = [P, BR]
 #         NOTE: NO BOLD TAGS <b> or <strong> or any other text formatting tags
         
@@ -530,7 +531,7 @@ def post_create_url(request) :
         NOTE: NO hashtags
         NOTE: THE CONTENT SHOULD BE THE LINKEDIN POST EACH PARAGRAPH SHOULD BE A <p> TAG AND EACH PARAGRAPH SHOULD HAVE A <br> SPACE BEWEEN THEM
         NOTE: only <p> and <br> should be used no other tag
-        NOTE: MAX LENGTH OF 300 words
+        NOTE: MAX LENGTH OF 700 words
         ALLOWED TAGS = [P, BR]
         NOTE: NO BOLD TAGS <b> or <strong> or any other text formatting tags
         
@@ -591,7 +592,7 @@ def regenerate_post(request, pk):
         NOTE: NO hashtags
         NOTE: THE CONTENT SHOULD BE THE LINKEDIN POST EACH PARAGRAPH SHOULD BE A <p> TAG AND EACH PARAGRAPH SHOULD HAVE A <br> SPACE BEWEEN THEM
         NOTE: only <p> and <br> should be used no other tag
-        NOTE: MAX LENGTH OF 300 words
+        NOTE: MAX LENGTH OF 700 words
         ALLOWED TAGS = [P, BR]
         NOTE: NO BOLD TAGS <b> or <strong> or any other text formatting tags in the response
         
