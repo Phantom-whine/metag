@@ -15,9 +15,14 @@ from bs4 import BeautifulSoup
 # from pytube import YouTube
 # from youtube_transcript_api import YouTubeTranscriptApi
 # from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptAvailable
+from rest_framework.pagination import PageNumberPagination
 from django.conf import settings
-from googleapiclient.discovery import build
 
+class CustomPostPaginator(PageNumberPagination):  # Renamed for clarity
+    page_size = 20
+    page_size_query_param = 'page_size'  # Changed from 'page'
+    max_page_size = 20
+    page_query_param = 'page'  # Explicitly define page number param
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -415,7 +420,7 @@ def post_create_text(request):
         
         Return JSON format with these keys: 
         ```json{{
-            "title": "string",
+            "title": "string should be short max 5 words",
             "content": "html string only <p> and <br> tags",
             "length": "integer"
         }}```
@@ -674,14 +679,17 @@ def post_list(request):
     Returns array of post objects with basic details
     """
     param_value = request.query_params.get("frame", 'most_recent')
+    
     if param_value == 'most_recent':
         posts = Post.objects.filter(user=request.user).order_by('-created')
-    else :
+    else:
         posts = Post.objects.filter(user=request.user).order_by('created')
 
-    serializer = PostSerializer(posts, many=True)
-    return Response(serializer.data)
-
+    paginator = CustomPostPaginator()  # Use your custom class
+    paginated = paginator.paginate_queryset(posts, request)
+    
+    serializer_inst = PostSerializer(paginated, many=True)
+    return paginator.get_paginated_response(serializer_inst.data)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

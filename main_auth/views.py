@@ -35,7 +35,8 @@ def continue_with_google(request):
         # Get or create user
         user, created = User.objects.get_or_create(
             email=user_email, defaults={"username": user_email.split('@')[0]},
-            fullname=user_name
+            fullname=user_name,
+            profile=profile_picture
         )
 
         if created:
@@ -66,7 +67,8 @@ def get_details(request) :
     data = {
         'fullname': user.fullname,
         'username': user.username,
-        'email': user.email
+        'email': user.email,
+        'profile': user.profile
     }
 
     return Response(data, status=status.HTTP_200_OK)
