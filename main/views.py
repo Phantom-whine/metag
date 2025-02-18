@@ -428,7 +428,7 @@ def post_create_text(request):
         print('-----------4')
 
         content = generated_data['content']
-        print('-----------4')
+        print(generated_data)
 
         if request.data.get('cta'):
             content = f"{generated_data['content']} <br> {request.data.get('cta')}"
@@ -475,7 +475,7 @@ def post_create_text(request):
 #         NOTE: NO hashtags
 #         NOTE: THE CONTENT SHOULD BE THE LINKEDIN POST EACH PARAGRAPH SHOULD BE A <p> TAG AND EACH PARAGRAPH SHOULD HAVE A <br> SPACE BEWEEN THEM
 #         NOTE: only <p> and <br> should be used no other tag
-#         NOTE: MAX LENGTH OF 700 words
+#         NOTE: MAX LENGTH OF 300 words
 #         ALLOWED TAGS = [P, BR]
 #         NOTE: NO BOLD TAGS <b> or <strong> or any other text formatting tags
         
@@ -531,7 +531,7 @@ def post_create_url(request) :
         NOTE: NO hashtags
         NOTE: THE CONTENT SHOULD BE THE LINKEDIN POST EACH PARAGRAPH SHOULD BE A <p> TAG AND EACH PARAGRAPH SHOULD HAVE A <br> SPACE BEWEEN THEM
         NOTE: only <p> and <br> should be used no other tag
-        NOTE: MAX LENGTH OF 700 words
+        NOTE: MAX LENGTH OF 300 words
         ALLOWED TAGS = [P, BR]
         NOTE: NO BOLD TAGS <b> or <strong> or any other text formatting tags
         
@@ -592,7 +592,7 @@ def regenerate_post(request, pk):
         NOTE: NO hashtags
         NOTE: THE CONTENT SHOULD BE THE LINKEDIN POST EACH PARAGRAPH SHOULD BE A <p> TAG AND EACH PARAGRAPH SHOULD HAVE A <br> SPACE BEWEEN THEM
         NOTE: only <p> and <br> should be used no other tag
-        NOTE: MAX LENGTH OF 700 words
+        NOTE: MAX LENGTH OF 300 words
         ALLOWED TAGS = [P, BR]
         NOTE: NO BOLD TAGS <b> or <strong> or any other text formatting tags in the response
         
