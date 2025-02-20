@@ -161,3 +161,5 @@ CORS_ORIGIN_ALLOW_ALL = True
 GEMINI_API_KEY = config('GEMINI_API_KEY')
 
 PROXY_LIST = BASE_DIR / 'proxy/proxies.json'
+
+SUPA_DATA_KEY = config('SUPA_DATA_KEY')
