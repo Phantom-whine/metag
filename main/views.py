@@ -16,9 +16,9 @@ from rest_framework.pagination import PageNumberPagination
 from django.conf import settings
 
 class CustomPostPaginator(PageNumberPagination):  # Renamed for clarity
-    page_size = 15
+    page_size = 9
     page_size_query_param = 'page_size'  # Changed from 'page'
-    max_page_size = 15
+    max_page_size = 9
     page_query_param = 'page'  # Explicitly define page number param
 
 # Set up logging
@@ -140,159 +140,334 @@ def extract_content(url):
         logger.error(f"Failed to retrieve webpage: {e}")
         return ""
 
-def extract_json(text_response: str) -> dict:
-    """
-    Extracts JSON data from Gemini text response containing possible markdown formatting
-    
-    Args:
-        text_response (str): Raw text response from Gemini API
+def extract_json(text):
+    try:
+        # Find JSON inside possible Markdown-style AI response
+        match = re.search(r'```json\s*({.*?})\s*```', text, re.DOTALL)
+        if match:
+            text = match.group(1)  # Extract only the JSON part
         
-    Returns:
-        dict: Parsed JSON data
-        
-    Raises:
-        json.JSONDecodeError: If no valid JSON found
-    """
-    # Try to find JSON in code blocks first
-    match = re.search(r'```json\s*(.*?)\s*```', text_response, re.DOTALL)
-    if match:
-        return json.loads(match.group(1))
-    
-    # Fallback to direct JSON parse
-    return json.loads(text_response)
+        # Remove any unwanted characters before/after JSON
+        text = text.strip().strip('`')
+
+        return json.loads(text)  # Convert to dictionary
+    except Exception as e:
+        raise ValueError("Invalid JSON format")
+
 
 s_prompt = '''
-Sample 1 : 
-Deepseek vs GPT
+# LINKEDIN POST GUIDE: REAL & ENGAGING FORMATS
 
-Effective AI models make you question your coding skills.
+## MAIN IDEAS
+- Share real value in every post
+- Mix up how your posts look
+- Stick to one main point per post
+- Write like you talk, but keep it professional
+- Ask real questions people want to answer
 
-Why?
+HOOK TYPES (Pick 1)
+A. Insight Hook
+[Brief, Specific Observation] eg (Ads are not Marketing, AI is changing fast, Deepseek Vs Gpt, 3 Marketing Mistakes you should avoid, Will Brics take Over?)
+NOTE: THE HOOK MUST CONTAIN POST SUBJECT eg (Ads are not Marketing, AI is changing fast, Deepseek Vs Gpt, 3 Marketing Mistakes you should avoid, Will Brics take Over?)
 
-Because they're pushing the boundaries of what's possible—
+NOTE: THE START OF EVERY POST MUST BE LIKE THIS (
+[Hook(max 5 words) start with Capital letter then the rest small letters]
+empty(new line (empty space))
+[next transition text (max 5 words)]
+)
 
-And solving complex problems in ways you never imagined.
+CORE MESSAGE STYLES (Pick 1-2)
+A. Value Proposition
+"The reality? [Honest assessment].
 
-They'll generate code for projects you've never attempted, and provide solutions with unprecedented accuracy.
+The approach that works? ⬇️"
 
-But it's not because they're trying to replace developers—
+B. Experience-Based Framework
+*"What I've learned about [topic]:
+[Element 1] → [Real outcome]
+↳ [Practical application]
+[Element 2] → [Observed pattern]
+↳ [Implementation insight]"*
+C. Transformation Story
+"[Time frame] of focused effort:
+[Starting point]? [Current reality].
+[Initial challenge]? [Solution found]."
 
-It's because they're demonstrating potential.
+## POST LAYOUTS (Choose what fits your message)
 
-After testing them, you'll realize how powerful AI-assisted coding can become.
+### 1. ARROW FORMAT (For showing cause-effect)
+```
+DECISION FATIGUE IS REAL
 
-Deepseek shows remarkable open-source capabilities.
+Three shifts that changed everything for me:
 
-GPT models offer sophisticated language understanding.
+Clear mind → Better choices
+↳ Make big decisions before lunch
+↳ Create simple systems for small choices
 
-Their strengths differ:
-- Deepseek: Strong in code generation
-- GPT: Excellent in natural language processing
+Short breaks → Fresh thinking
+↳ Take 10 minutes between meetings
+↳ Change your space to reset your mind
 
-Each model brings unique advantages to the development landscape.
+Energy planning → Staying focused
+↳ Protect your best hours
+↳ Work with your natural ups and downs
 
-Some developers will prefer Deepseek's transparency.
-Others will lean towards GPT's versatility.
+Your biggest choices deserve your best thinking.
 
-So which AI model will transform your workflow—
+How do you stay fresh when making tough calls?
+```
 
-An open challenger, or a proven performer?
+### 2. NUMBERED LIST FORMAT (For tips and steps)
+```
+5 WAYS TO DELEGATE BETTER
 
-I know which I'd experiment with.
+That actually help your team grow:
 
-SAMPLE 2 : So much truth to this.
+1. Start with why
+   Share the reason, not just the task
+   Help people see the bigger picture
 
-Ai in medicine is changing everything.
+2. Match tasks to people
+   Play to strengths
+   Think about growth, not just skills
 
-We need to embrace it.
+3. Clear goals, open paths
+   Define what success looks like
+   Let people find their own way there
 
-Why this matters:
+4. Help without taking over
+   Be there when needed
+   Provide tools, not rescues
 
-↳ Ai helps doctors diagnose diseases faster and more accurately.
+5. Celebrate growth
+   Notice the learning
+   Praise progress, not just results
 
-Quick and correct diagnoses save lives.
+Good delegation isn't about doing less—it's about growing others.
 
-↳ Ai can analyze medical data better than humans.
+What's your hardest part of delegating? I'm curious.
+```
 
-This means better treatment plans for patients.
+### 3. THIS vs. THAT FORMAT (For comparing approaches)
+```
+PRODUCTIVITY MYTHS
 
-↳ Ai assists in surgery with precision.
+What doesn't work vs. What does:
 
-Robotic arms guided by Ai reduce errors in operations.
+To-do lists vs. Focus blocks
+- Lists feel busy but don't finish things
+- Blocks make sure the big stuff gets done
 
-↳ Ai personalizes patient care.
+Clock-watching vs. Energy planning
+- Tracking hours drains creativity
+- Working with your energy creates flow
 
-Tailored treatments improve recovery rates.
+Doing many things vs. Deep work
+- Switching tasks wastes nearly half your time
+- Focused blocks get real results
 
-The future of healthcare is here and it’s powered by Ai.
+The best system is the one you'll actually stick with.
 
-Don’t let fear of change stop us from using this incredible tool.
+What unusual method has helped your productivity?
+```
 
+### 4. STORY FORMAT (For personal lessons)
+```
+HOW I BEAT BURNOUT
 
+My journey in 3 parts:
 
-sample 3: GPT or DeepSeek? A question that's been on my mind lately.
+PART 1: The breaking point
+• Working nights and weekends became normal
+• Always on my phone, always tired
+• Using caffeine instead of rest
 
-I've tested both AI models extensively over the past months. Each time I switch between them, I notice distinct differences in their responses.
+PART 2: The wake-up call
+• Realized more hours ≠ better work
+• Found my best ideas come when I'm fresh
+• Learned that rest makes me more productive
 
-GPT feels like talking to a well-trained professional - polite, precise, and sometimes a bit reserved. DeepSeek, on the other hand, comes across as more direct and occasionally more creative in its approach.
+PART 3: The new way
+• Set firm cutoff times
+• Told my team when I'm available
+• Built rest into my schedule
 
-The cost difference is significant. GPT can be expensive for regular use, while DeepSeek offers similar capabilities at a lower price point.
+This change wasn't quick, but it was worth it.
 
-But here's what I've learned: the best choice depends entirely on your specific needs.
+What boundary has helped your work life the most?
+```
 
-For creative writing and general conversation, GPT often provides more nuanced responses. For coding and technical tasks, DeepSeek can be surprisingly effective.
+### 5. PROBLEM-SOLUTION FORMAT (For common challenges)
+```
+WHY FEEDBACK FAILS
 
-I still use both. Some days I prefer GPT's reliability, other days I appreciate DeepSeek's straightforward approach.
+And how to fix it:
 
-What matters 𝐢𝐬𝐧'𝐭 𝐰𝐡𝐢𝐜𝐡 𝐦𝐨𝐝𝐞𝐥 𝐢𝐬 "𝐛𝐞𝐭𝐭𝐞𝐫" - 𝐢𝐭'𝐬 𝐚𝐛𝐨𝐮𝐭 𝐰𝐡𝐢𝐜𝐡 𝐨𝐧𝐞 𝐡𝐞𝐥𝐩𝐬 𝐲𝐨𝐮 𝐚𝐜𝐡𝐢𝐞𝐯𝐞 𝐲𝐨𝐮𝐫 𝐠𝐨𝐚𝐥𝐬 𝐦𝐨𝐫𝐞 𝐞𝐟𝐟𝐞𝐜𝐭𝐢𝐯𝐞𝐥𝐲.
+PROBLEM: Too vague
+"Good job" without details
+Leaves room for confusion
 
-𝐀𝐫𝐞 𝐲𝐨𝐮 𝐮𝐬𝐢𝐧𝐠 𝐞𝐢𝐭𝐡𝐞r 𝐨𝐟 𝐭𝐡𝐞𝐬𝐞 𝐀𝐈 𝐦𝐨𝐝𝐞𝐥𝐬? 𝐈'𝐝 𝐛𝐞 𝐜𝐮𝐫𝐢𝐨𝐮𝐬 𝐭𝐨 𝐡𝐞𝐚𝐫 𝐚𝐛𝐨𝐮𝐭 𝐲𝐨𝐮𝐫 𝐞𝐱𝐩𝐞𝐫𝐢𝐞𝐧𝐜𝐞 𝐰𝐢𝐭𝐡 𝐭𝐡𝐞𝐦.
+FIX: Be specific
+Point to exact actions
+Connect what they did to what happened
 
-𝐏.𝐒.: 𝐇𝐚𝐬 𝐚𝐧𝐲𝐨𝐧𝐞 𝐞𝐥𝐬𝐞 𝐧𝐨𝐭𝐢𝐜𝐞𝐝 𝐡𝐨𝐰 𝐪𝐮𝐢𝐜𝐤𝐥𝐲 𝐭𝐡𝐞𝐬𝐞 𝐦𝐨𝐝𝐞𝐥𝐬 𝐚𝐫𝐞 𝐢𝐦𝐩𝐫𝐨𝐯𝐢𝐧𝐠?
+PROBLEM: Bad timing
+Waiting for review season
+Saving up issues until they're huge
 
+FIX: Regular check-ins
+Short, casual feedback often
+Talk while things are still fresh
 
+PROBLEM: All criticism, no help
+Pointing out what's wrong
+Making people defensive
 
-SAMPLE 4: 
-AI isn't coming for your job - it's already here.
+FIX: Guide, don't just judge
+For every problem, offer a next step
+Focus on growth, not just fixing
 
-I've seen people panic about AI replacing them. I've also seen others completely ignore its impact.
+What's your best tip for giving helpful feedback?
+```
 
-Both reactions miss the point.
+### 6. ARROW INSIGHT FORMAT (For expert advice)
+```
+NEGOTIATION SECRETS
 
-Here's what's really happening:
+After hundreds of deals, here's what works:
 
-↳ Creative roles are being enhanced, not replaced
-↳ Some industries face more changes than others
-↳ New positions are emerging daily
-↳ AI is taking over repetitive tasks
+Homework → Confidence
+↳ Most wins happen before you show up
+↳ Know when you'll walk away
 
-I remember when automation hit the manufacturing sector. Workers who adapted thrived. Those who resisted struggled.
+Questions → Finding value
+↳ Asking reveals what matters
+↳ Understanding needs uncovers hidden wins
 
-The same pattern is happening with AI.
+Patience → Better deals
+↳ Being OK with silence gets better terms
+↳ Rushing looks desperate
 
-But here's the truth: AI won't replace humans - it will replace humans who don't know how to work with AI.
+The best negotiators listen more than they talk.
 
-Think about these questions:
+What's your go-to negotiation trick?
+```
 
-1. Are you learning about AI tools?
-2. What new skills are you developing?
-3. Have you identified which parts of your job AI could enhance?
+### 7. BULLET POINT FORMAT (For quick tips)
+```
+BETTER MEETINGS
 
-The workplace is changing. Fast.
+Three changes that cut our meeting time in half:
 
-Don't wait for someone to tell you your role is obsolete.
+• Start with a clear goal
+  Know what success looks like before you begin
 
-Start exploring AI tools today. Learn how they work. Understand their limitations.
+• Send prep work early
+  Good homework leads to good talk time
 
-Because the real question isn't if AI will affect your job - it's how you'll use AI to become better at it.
+• Create, then evaluate
+  Don't judge ideas while they're still forming
 
-P.S. Share this → help others prepare for the AI revolution 
+These simple shifts saved us hours while getting better results.
+
+Which one would help your meetings the most?
+```
+
+### 8. PLAIN TEXT STORY (For personal reflections)
+```
+THE ADVICE I WISH I'D GOTTEN EARLIER
+
+I was stuck. Working hard but not feeling right about it.
+
+Everyone told me: work harder, meet more people, learn new skills.
+
+It all made sense, but nothing changed.
+
+Then someone asked me something different: "What problems do you actually enjoy solving?"
+
+Not what I was good at. Not what paid well. But what energized me even when it was hard.
+
+That question changed everything.
+
+I realized I was climbing the wrong ladder. Good at work that drained me instead of filling me up.
+
+The change wasn't overnight, but that question started me on a new path.
+
+Now I ask everyone I mentor the same thing.
+
+What problems do you actually enjoy solving?
+```
+
+## WAYS TO END YOUR POST
+
+### QUESTIONS TO ASK
+```
+What's been your experience with this?
+```
+
+```
+Which of these ideas clicks most with you?
+```
+
+```
+How have you handled this in your work?
+```
+
+```
+What would you add based on your experience?
+```
+
+### INVITATIONS TO ACT
+```
+Try just one of these ideas this week. I'd love to hear what happens.
+```
+
+```
+Think about which of these patterns might be showing up in your team.
+```
+
+```
+Share your biggest takeaway if this sparked any new thoughts.
+```
+
+### THOUGHTFUL ENDINGS
+```
+Take a moment: Which of these shows up most in your work?
+```
+
+```
+Think about your last tough project: Which idea here could have helped?
+```
+
+```
+Consider where you might be following the crowd when a different approach could work better.
+```
+RULES:
+
+Vary your approach between posts to maintain freshness
+Content before format - ensure valuable insights drive each section
+Use ↳ with four leading spaces for visual indentation (4 SPACES)
+Related lines should not have any space between them
+Focus on genuine experiences and practical wisdom
+Avoid industry jargon and buzzwords
+Write conversationally but professionally
+Each post should deliver one clear, valuable insight
+Replace ALL [brackets] with appropriate text
+Test for authenticity: Would you share this advice one-on-one?
+
+## KEEPING IT REAL
+- Write what you know, not just theories
+- Include real examples that show you've been there
+- Share practical wisdom, not generic advice
+- Ask yourself: "Would I say this to someone face-to-face?"
+- Focus on helping, not going viral
 
 Write a compelling social media post in an engaging and concise format. The post should:
 
 Start with a bold short (max 5 words), thought-provoking statement or question.
-Follow with a short transition sentence that builds intrigue.
-Present a numbered or bulleted list of key points with brief explanations.
+Follow with a short transition sentence that builds intrigue (max 5 words).
+Present a numbered or bulleted list of key points with brief explanations (WHEN NEEDED).
 End with a strong conclusion, takeaway, or call to action.
 NOTE: HOOK SHOULD NOT BE MORE THAN 5 WORDS AND SHOULD BE SCROLL STOPPING
 NOTE: IT MUST SOUND HUMAN NOT LIKE AI
@@ -303,6 +478,9 @@ NOTE: ALSO YOU CAN ASK SOME QUESTIONS TO THE READERS CAUSING THEM TO THINK BUT B
 NOTE: THE SECOND LINE OR SENTENCE SHOULD NOT BE TOO LONG MAX 7 WORDS AND SHOULD GRAB ATTENTION
 NOTE: THE POST MUST HAVE ALOT OF CONTEXT NOT VERY SHORT WITH NO CONTEXT
 NOTE: THE FIRST AND SECOND LINE NO MORE THAN 5 WORDS
+NOTE: NO BOLDED TEXT NO <B>, <STRONG> TAGS
+NOTE: THE THIRD SENTENCE SHOULD BE SHORT MAX (6 WORDS)
+NOTE: REDUCE SPACING RELATED LINES SHOULD NOT HAVE ANY SPACE BETWEEN THEM
 '''
 
 @api_view(['GET', 'DELETE'])
@@ -347,33 +525,29 @@ def post_create_text(request):
         Tone: {request.data.get('tone')}
         NOTE: NO hashtags
         NOTE: THE CONTENT SHOULD BE THE LINKEDIN POST EACH PARAGRAPH SHOULD BE A <p> TAG AND EACH PARAGRAPH SHOULD HAVE A <br> SPACE BEWEEN THEM
-        NOTE: only <p> and <br> should be used no other tag
+        NOTE: only <p> and <br> should be used
+        NOTE: MIN LENGTH (90 WORDS) MAX LENGTH (190) words
         ALLOWED TAGS = [P, BR]
-        NOTE: NO BOLD TAGS <b> or <strong> or any other text formatting tags in the response
         
         Return JSON format with these keys: 
         ```json{{
-            "title": "string should be short max 5 words",
+            "title": "string should be short max 4 words",
             "content": "html string only <p> and <br> tags",
             "length": "integer"
         }}```
         """
         
         # Generate content with Gemini 1.5 Flash
-        print('-----------4')
         response = chat_session.send_message(prompt)
         generated_data = extract_json(response.text)
-        print('-----------4')
 
         content = generated_data['content']
-        print(generated_data)
 
         if request.data.get('cta'):
             content = f"{generated_data['content']} <br> {request.data.get('cta')}"
 
         
         # Create and save post
-        print('-----------4')
         post = Post.objects.create(
             user=request.user,
             title=generated_data['title'],
@@ -413,7 +587,6 @@ def get_youtube_transcript(url, api_key):
         response = requests.get(api_url, headers=headers)
         response.raise_for_status()
         data = response.json()
-        print(data)
 
         # Remove the 'text' key from each dictionary in the 'content' list
         if "content" in data:
@@ -437,7 +610,8 @@ def post_create_youtube(request) :
         # Build AI prompt with structured requirements
         prompt = f"""
         {s_prompt}
-        Ensure the tone is authoritative yet conversational. This is the raw data: {text}, and the post should be formatted similarly to the examples provided also with easy to understand words.
+        Ensure the tone is authoritative yet conversational. This is the Youtube Video Transcript: {text}, and the post should be formatted similarly to the examples provided also with easy to understand words.
+        NOTE: THE PST MUST CONTAIN KEY POINTS FROM THE YOUTUBE VIDEO
         Tone: {tone}
         NOTE: NO hashtags
         NOTE: THE CONTENT SHOULD BE THE LINKEDIN POST EACH PARAGRAPH SHOULD BE A <p> TAG AND EACH PARAGRAPH SHOULD HAVE A <br> SPACE BEWEEN THEM
@@ -552,16 +726,17 @@ def regenerate_post(request, pk):
         
         # Build regeneration prompt with existing content
         prompt = f"""
-        Improve and regenerate this LinkedIn post while maintaining its core message:
-        
-        {s_prompt}
-        Ensure the tone is authoritative yet conversational. The original Title is {post.title} original content: {post.content}, and the post should be formatted similarly to the examples provided also with easy to understand words.
+        Improve and regenerate this LinkedIn post while maintaining its core message and Layout:
+
+        NOTE: NO BOLDED TEXT
+        Ensure the tone should not chnage yet conversational. The original Title is {post.title} original content: {post.content}, and the post should be formatted similarly to the examples provided also with easy to understand words.
         NOTE: NO hashtags
         NOTE: THE CONTENT SHOULD BE THE LINKEDIN POST EACH PARAGRAPH SHOULD BE A <p> TAG AND EACH PARAGRAPH SHOULD HAVE A <br> SPACE BEWEEN THEM
         NOTE: only <p> and <br> should be used no other tag
         NOTE: MAX LENGTH OF 300 words
         ALLOWED TAGS = [P, BR]
         NOTE: NO BOLD TAGS <b> or <strong> or any other text formatting tags in the response
+        NOTE: THE CTA SHOULD NEVER CHANGE IT SHOULD BE THE SAME
         
         Return JSON format with these keys: 
         ```json{{
@@ -664,6 +839,10 @@ def post_edit(request, id) :
         if not test or len(test) < 30:
             return Response({'msg': 'EMPTY CONTENT'}, status=status.HTTP_400_BAD_REQUEST)
         
+
+        if content != post.content :
+            post.edited = True
+
         post.content = content
         post.save()
 
@@ -685,8 +864,8 @@ def post_save_editor(request) :
         return Response({'msg': 'EMPTY CONTENT'}, status=status.HTTP_400_BAD_REQUEST)
     
     title = content.split()
-    if len(title) > 6 :
-        title = ' '.join(title[:8])
+    if len(title) > 5 :
+        title = ' '.join(title[:5])
     else :
         title = ' '.join(title[:len(title)-1])
     
@@ -695,6 +874,8 @@ def post_save_editor(request) :
         title = title,
         user = request.user
     )
+    if content != post.content :
+        post.edited = True
     post.save()
 
     return Response({'msg': 'Post Saved'}, status=status.HTTP_200_OK)
@@ -714,17 +895,24 @@ def post_edit_ai(request) :
         NOTE: NO GIMICKS USE EASY TO UNDERTAND WORDS
         NOTE: NO HASHTAGS UNLESS REQUESTED
         NOTE: IF ASKED TO RESTRUCTURE THE RESPONSE IN A NICE FORMAT USING <p> and <br> tags only and maybe numberings and some icons
-        NOTE: NO STYLING, NO OTHER TAGS EXCEPT FROM P AND BR AND NO WEIRD FORMATTING JUST TEXT
 
         THE RESPONSE SHOULD BE IN THIS JSON FORMAT
         ```json{{
-            "content": "result here",
+            "content": "result here (valid for json content)",
             "length": "integer"
             }}
         ```
     '''
 
+    prompt = prompt.replace('<!---->', '')
     response = model.generate_content(prompt)
-    generated_data = extract_json(response.text)
+    try:
+        generated_data = extract_json(response.text)
+    except:
+        try:
+            fallback = json.loads(response.text)
+            return Response({"result": fallback['content']}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': 'Could no generate'}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({"result": generated_data['content']}, status=status.HTTP_200_OK)

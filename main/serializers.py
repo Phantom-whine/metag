@@ -6,7 +6,7 @@ class PostSerializer(serializers.ModelSerializer):
     time_ago = serializers.SerializerMethodField()
     class Meta:
         model = Post
-        fields = ['id', 'title', 'created', 'content', 'user', 'length', 'time_ago']
+        fields = ['id', 'title', 'created', 'content', 'user', 'length', 'time_ago', 'edited']
         read_only_fields = ['user', 'created', 'length']
 
     def get_time_ago(self, obj):

@@ -11,6 +11,7 @@ class Post(models.Model):
     content = models.TextField()  # HTML content
     created = models.DateTimeField(auto_now=True)
     length = models.PositiveIntegerField()
+    edited = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.length = len(self.content)

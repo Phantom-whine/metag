@@ -16,7 +16,7 @@ class AntiDDoSMiddleware:
 
         # Remove old timestamps
         self.request_count[ip] = [
-            t for t in self.request_count[ip] 
+            t for t in self.request_count[ip]
             if t > current_time - 60  # 60-second window
         ]
 
