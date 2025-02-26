@@ -165,15 +165,15 @@ s_prompt = '''
 - Write like you talk, but keep it professional
 - Ask real questions people want to answer
 
-HOOK TYPES (Pick 1)
-A. Insight Hook
-[Brief, Specific Observation] eg (Ads are not Marketing, AI is changing fast, Deepseek Vs Gpt, 3 Marketing Mistakes you should avoid, Will Brics take Over?)
+HOOK 
+NOTE: HOOK SHOULD BE SCROLL STOPPING AND VERY NICE LIKE THE EXAMPLES
+eg (Ads are not Marketing, AI is changing fast, Deepseek Vs Gpt, 3 Marketing Mistakes you should avoid, Will Brics take Over?)
 NOTE: THE HOOK MUST CONTAIN POST SUBJECT eg (Ads are not Marketing, AI is changing fast, Deepseek Vs Gpt, 3 Marketing Mistakes you should avoid, Will Brics take Over?)
 
 NOTE: THE START OF EVERY POST MUST BE LIKE THIS (
-[Hook(max 5 words) start with Capital letter then the rest small letters]
+[Hook(max 8 words) start with Capital letter then the rest small letters]
 empty(new line (empty space))
-[next transition text (max 5 words)]
+[next transition text (max 7 words)]
 )
 
 CORE MESSAGE STYLES (Pick 1-2)
@@ -469,7 +469,7 @@ Start with a bold short (max 5 words), thought-provoking statement or question.
 Follow with a short transition sentence that builds intrigue (max 5 words).
 Present a numbered or bulleted list of key points with brief explanations (WHEN NEEDED).
 End with a strong conclusion, takeaway, or call to action.
-NOTE: HOOK SHOULD NOT BE MORE THAN 5 WORDS AND SHOULD BE SCROLL STOPPING
+NOTE: HOOK SHOULD NOT BE MORE THAN 8 WORDS AND SHOULD BE SCROLL STOPPING
 NOTE: IT MUST SOUND HUMAN NOT LIKE AI
 NOTE: THE POST MUST BE LIKE HUMAN WRITING SO NO GIMICKY WORDS OR PHRASES
 NOTE: USE NATURAL LANGUAGE MAKE THE POST ENJOYABLE AND HAS ELEMENTS THAT WILL MAKE READERS READ TO THE END
@@ -477,7 +477,7 @@ NOTE: ADD SOME PERSONAL CONTEXT / STORY IN THE POST
 NOTE: ALSO YOU CAN ASK SOME QUESTIONS TO THE READERS CAUSING THEM TO THINK BUT BE NATURAL
 NOTE: THE SECOND LINE OR SENTENCE SHOULD NOT BE TOO LONG MAX 7 WORDS AND SHOULD GRAB ATTENTION
 NOTE: THE POST MUST HAVE ALOT OF CONTEXT NOT VERY SHORT WITH NO CONTEXT
-NOTE: THE FIRST AND SECOND LINE NO MORE THAN 5 WORDS
+NOTE: THE FIRST AND SECOND LINE NO MORE THAN 58WORDS
 NOTE: NO BOLDED TEXT NO <B>, <STRONG> TAGS
 NOTE: THE THIRD SENTENCE SHOULD BE SHORT MAX (6 WORDS)
 NOTE: REDUCE SPACING RELATED LINES SHOULD NOT HAVE ANY SPACE BETWEEN THEM
