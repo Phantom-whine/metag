@@ -165,15 +165,13 @@ s_prompt = '''
 - Write like you talk, but keep it professional
 - Ask real questions people want to answer
 
-HOOK 
-NOTE: HOOK SHOULD BE SCROLL STOPPING AND VERY NICE LIKE THE EXAMPLES
-eg (Ads are not Marketing, AI is changing fast, Deepseek Vs Gpt, 3 Marketing Mistakes you should avoid, Will Brics take Over?)
-NOTE: THE HOOK MUST CONTAIN POST SUBJECT eg (Ads are not Marketing, AI is changing fast, Deepseek Vs Gpt, 3 Marketing Mistakes you should avoid, Will Brics take Over?)
+HOOK eg (Ads are not Marketing, AI is changing fast, Deepseek Vs Gpt, 3 Marketing Mistakes you should avoid, Will Brics take Over?)
 
 NOTE: THE START OF EVERY POST MUST BE LIKE THIS (
-[Hook(max 8 words) start with Capital letter then the rest small letters]
+[Hook(max 7 words) start with Capital letter then the rest small letters]
 empty(new line (empty space))
-[next transition text (max 7 words)]
+[next transition text (max 5 words)]
+empty(new line (empty space))
 )
 
 CORE MESSAGE STYLES (Pick 1-2)
