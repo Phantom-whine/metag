@@ -10,3 +10,10 @@ class User(AbstractUser) :
 
     def __str__(self):
         return f'Account for - {self.email}'
+
+# class UserData(models.Model) :
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     goal = models.TextField()
+#     engagement_rate = models.CharField(max_length=50)
+#     ai_experience = models.CharField(max_length=50)
+#     interest = models.CharField(max_length=100)

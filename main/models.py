@@ -9,7 +9,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     content = models.TextField()  # HTML content
-    created = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
     length = models.PositiveIntegerField()
     edited = models.BooleanField(default=False)
 

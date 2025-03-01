@@ -193,7 +193,7 @@ C. Transformation Story
 
 ## POST LAYOUTS (Choose what fits your message)
 
-### 1. ARROW FORMAT (For showing cause-effect)
+### 1. ARROW FORMAT (For showing cause-effect eg: How Meditation Boosts Creativity)
 ```
 DECISION FATIGUE IS REAL
 
@@ -202,126 +202,126 @@ Three shifts that changed everything for me:
 Clear mind → Better choices
 ↳ Make big decisions before lunch
 ↳ Create simple systems for small choices
-
+<line_break here>
 Short breaks → Fresh thinking
 ↳ Take 10 minutes between meetings
 ↳ Change your space to reset your mind
-
+<line_break here>
 Energy planning → Staying focused
 ↳ Protect your best hours
 ↳ Work with your natural ups and downs
-
+<line_break here>
 Your biggest choices deserve your best thinking.
-
+<line_break here>
 How do you stay fresh when making tough calls?
 ```
 
-### 2. NUMBERED LIST FORMAT (For tips and steps)
+### 2. NUMBERED LIST FORMAT (Only use if the post topic is like this eg. [x] things to do))
 ```
 5 WAYS TO DELEGATE BETTER
-
+<line_break here>
 That actually help your team grow:
-
+<line_break here>
 1. Start with why
    Share the reason, not just the task
    Help people see the bigger picture
-
+<line_break here>
 2. Match tasks to people
    Play to strengths
    Think about growth, not just skills
-
+<line_break here>
 3. Clear goals, open paths
    Define what success looks like
    Let people find their own way there
-
+<line_break here>
 4. Help without taking over
    Be there when needed
    Provide tools, not rescues
-
+<line_break here>
 5. Celebrate growth
    Notice the learning
    Praise progress, not just results
-
+<line_break here>
 Good delegation isn't about doing less—it's about growing others.
-
+<line_break here>
 What's your hardest part of delegating? I'm curious.
 ```
 
-### 3. THIS vs. THAT FORMAT (For comparing approaches)
+### 3. THIS vs. THAT FORMAT (Compares two ideas (e.g., "Remote work vs. Office work"))
 ```
 PRODUCTIVITY MYTHS
-
+<line_break here>
 What doesn't work vs. What does:
-
+<line_break here>
 To-do lists vs. Focus blocks
 - Lists feel busy but don't finish things
 - Blocks make sure the big stuff gets done
-
+<line_break here>
 Clock-watching vs. Energy planning
 - Tracking hours drains creativity
 - Working with your energy creates flow
-
+<line_break here>
 Doing many things vs. Deep work
 - Switching tasks wastes nearly half your time
 - Focused blocks get real results
-
+<line_break here>
 The best system is the one you'll actually stick with.
-
+<line_break here>
 What unusual method has helped your productivity?
 ```
 
-### 4. STORY FORMAT (For personal lessons)
+### 4. STORY FORMAT (for personal lessons (e.g., "How I overcame procrastination"))
 ```
 HOW I BEAT BURNOUT
-
+<line_break here>
 My journey in 3 parts:
-
+<line_break here>
 PART 1: The breaking point
 • Working nights and weekends became normal
 • Always on my phone, always tired
 • Using caffeine instead of rest
-
+<line_break here>
 PART 2: The wake-up call
 • Realized more hours ≠ better work
 • Found my best ideas come when I'm fresh
 • Learned that rest makes me more productive
-
+<line_break here>
 PART 3: The new way
 • Set firm cutoff times
 • Told my team when I'm available
 • Built rest into my schedule
-
+<line_break here>
 This change wasn't quick, but it was worth it.
-
+<line_break here>
 What boundary has helped your work life the most?
 ```
 
-### 5. PROBLEM-SOLUTION FORMAT (For common challenges)
+### 5. PROBLEM-SOLUTION FORMAT (For common challenges e.g., "Why people fail at diets and how to succeed")
 ```
 WHY FEEDBACK FAILS
-
+<line_break here>
 And how to fix it:
-
+<line_break here>
 PROBLEM: Too vague
 "Good job" without details
 Leaves room for confusion
-
+<line_break here>
 FIX: Be specific
 Point to exact actions
 Connect what they did to what happened
-
+<line_break here>
 PROBLEM: Bad timing
 Waiting for review season
 Saving up issues until they're huge
-
+<line_break here>
 FIX: Regular check-ins
 Short, casual feedback often
 Talk while things are still fresh
-
+<line_break here>
 PROBLEM: All criticism, no help
 Pointing out what's wrong
 Making people defensive
-
+<line_break here>
 FIX: Guide, don't just judge
 For every problem, offer a next step
 Focus on growth, not just fixing
@@ -329,46 +329,46 @@ Focus on growth, not just fixing
 What's your best tip for giving helpful feedback?
 ```
 
-### 6. ARROW INSIGHT FORMAT (For expert advice)
+### 6. ARROW INSIGHT FORMAT (For expert advice e.g. "Top productivity hacks")
 ```
 NEGOTIATION SECRETS
-
+<line_break here>
 After hundreds of deals, here's what works:
-
+<line_break here>
 Homework → Confidence
 ↳ Most wins happen before you show up
 ↳ Know when you'll walk away
-
+<line_break here>
 Questions → Finding value
 ↳ Asking reveals what matters
 ↳ Understanding needs uncovers hidden wins
-
+<line_break here>
 Patience → Better deals
 ↳ Being OK with silence gets better terms
 ↳ Rushing looks desperate
-
+<line_break here>
 The best negotiators listen more than they talk.
-
+<line_break here>
 What's your go-to negotiation trick?
 ```
 
-### 7. BULLET POINT FORMAT (For quick tips)
+### 7. BULLET POINT FORMAT (For quick tips eg Habits for sharper focus)
 ```
 BETTER MEETINGS
 
 Three changes that cut our meeting time in half:
-
+<line_break here>
 • Start with a clear goal
   Know what success looks like before you begin
-
+<line_break here>
 • Send prep work early
   Good homework leads to good talk time
-
+<line_break here>
 • Create, then evaluate
   Don't judge ideas while they're still forming
-
+<line_break here>
 These simple shifts saved us hours while getting better results.
-
+<line_break here>
 Which one would help your meetings the most?
 ```
 
@@ -381,7 +381,7 @@ I was stuck. Working hard but not feeling right about it.
 Everyone told me: work harder, meet more people, learn new skills.
 
 It all made sense, but nothing changed.
-
+<line_break here>
 Then someone asked me something different: "What problems do you actually enjoy solving?"
 
 Not what I was good at. Not what paid well. But what energized me even when it was hard.
@@ -478,7 +478,6 @@ NOTE: THE POST MUST HAVE ALOT OF CONTEXT NOT VERY SHORT WITH NO CONTEXT
 NOTE: THE FIRST AND SECOND LINE NO MORE THAN 58WORDS
 NOTE: NO BOLDED TEXT NO <B>, <STRONG> TAGS
 NOTE: THE THIRD SENTENCE SHOULD BE SHORT MAX (6 WORDS)
-NOTE: REDUCE SPACING RELATED LINES SHOULD NOT HAVE ANY SPACE BETWEEN THEM
 '''
 
 @api_view(['GET', 'DELETE'])
@@ -502,6 +501,9 @@ def post_get_delete(request, pk):
     elif request.method == 'DELETE':
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+def remove_brackets_inside_html(text):
+    return re.sub(r"\[(.*?)\]", r"\1", text)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -540,6 +542,8 @@ def post_create_text(request):
         generated_data = extract_json(response.text)
 
         content = generated_data['content']
+        content = content.replace('[', '')
+        content = content.replace(']', '')
 
         if request.data.get('cta'):
             content = f"{generated_data['content']} <br> {request.data.get('cta')}"
@@ -594,6 +598,20 @@ def get_youtube_transcript(url, api_key):
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
 
+def get_keypoints(source) :
+    prompt = f'''
+        Analyze this text: {source} and give me the key points
+        NOTE: STRICTLY Return JSON format with these keys: 
+        ```json{{
+            "keypoints": "keypoints here",
+        }}```
+    '''
+
+    response = chat_session.send_message(prompt)
+    generated_data = extract_json(response.text)
+
+    return generated_data['keypoints']
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def post_create_youtube(request) :
@@ -629,12 +647,15 @@ def post_create_youtube(request) :
         # Generate content with Gemini 1.5 Flash
         response = chat_session.send_message(prompt)
         generated_data = extract_json(response.text)
+        content = generated_data['content']
+        content = content.replace('[', '')
+        content = content.replace(']', '')
         
         # Create and save post
         post = Post.objects.create(
             user=request.user,
             title=generated_data['title'],
-            content=generated_data['content'],
+            content=content,
             length=generated_data.get('length', len(generated_data['content']))
         )
         
@@ -685,12 +706,15 @@ def post_create_url(request) :
         # Generate content with Gemini 1.5 Flash
         response = chat_session.send_message(prompt)
         generated_data = extract_json(response.text)
+        content = generated_data['content']
+        content = content.replace('[', '')
+        content = content.replace(']', '')
         
         # Create and save post
         post = Post.objects.create(
             user=request.user,
             title=generated_data['title'],
-            content=generated_data['content'],
+            content=content,
             length=generated_data.get('length', len(generated_data['content']))
         )
         
@@ -738,7 +762,7 @@ def regenerate_post(request, pk):
         
         Return JSON format with these keys: 
         ```json{{
-            "title": "string",
+            "title": "string max 5 words",
             "content": "html string only <p> and <br> tags",
             "length": "integer"
         }}```

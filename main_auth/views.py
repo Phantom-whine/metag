@@ -34,13 +34,14 @@ def continue_with_google(request):
 
         # Get or create user
         user, created = User.objects.get_or_create(
-            email=user_email, defaults={"username": user_email.split('@')[0]},
-            fullname=user_name,
+            email=user_email, 
+            defaults={"username": user_email.split('@')[0]},
             profile=profile_picture
         )
 
         if created:
             # Additional user initialization logic if needed
+            user.fullname = user_name
             user.is_active = True
             user.save()
 
@@ -53,6 +54,7 @@ def continue_with_google(request):
                 "refresh": str(refresh),
                 "profile": profile_picture,
                 "message": "User created" if created else "User logged in",
+                "register": created
             }
         )
 
@@ -72,3 +74,25 @@ def get_details(request) :
     }
 
     return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def set_detail(request) :
+    user = request.user
+    name = request.data.get('name')
+
+    user.fullname = name
+    user.save()
+
+    return Response({'data': 'saved'}, status=status.HTTP_200_OK)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_account(request):
+    try:
+        user = request.user
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
